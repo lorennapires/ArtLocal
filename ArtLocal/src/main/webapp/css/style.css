@@ -1,0 +1,1363 @@
+/* ========================================
+   RESET E VARIÁVEIS
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Cores principais */
+    --primary: #6C63FF;
+    --primary-dark: #5448CC;
+    --secondary: #FF6584;
+    --dark: #2D3748;
+    --light: #F7FAFC;
+    --gray: #718096;
+    --gray-light: #E2E8F0;
+    --success: #48BB78;
+    --danger: #F56565;
+    --warning: #ED8936;
+    
+    /* Tipografia */
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    
+    /* Espaçamentos */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: var(--font-main);
+    line-height: 1.6;
+    color: var(--dark);
+    background-color: var(--light);
+}
+
+main {
+    min-height: calc(100vh - 120px);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================
+   HEADER / NAVBAR
+   ======================================== */
+
+header {
+    background: white;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    padding: var(--spacing-sm) 0;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-md);
+}
+
+.nav-menu a {
+    color: var(--dark);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+    color: var(--primary);
+}
+
+.search-form {
+    flex: 1;
+    max-width: 400px;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-form input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-full);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-form input:focus {
+    border-color: var(--primary);
+}
+
+.search-form button {
+    padding: 0.5rem 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-form button:hover {
+    background: var(--primary-dark);
+}
+
+.nav-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    min-width: 150px;
+}
+
+.user-menu:hover .dropdown {
+    display: block;
+}
+
+.dropdown a {
+    display: block;
+    padding: var(--spacing-xs);
+    transition: background 0.3s;
+}
+
+.dropdown a:hover {
+    background: var(--light);
+}
+
+/* ========================================
+   BOTÕES
+   ======================================== */
+
+.btn-primary, .btn-secondary, .btn-danger, .btn-login, .btn-signup {
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: var(--gray-light);
+    color: var(--dark);
+}
+
+.btn-secondary:hover {
+    background: var(--gray);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #E53E3E;
+}
+
+.btn-login {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-login:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-signup {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+.btn-ver {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all 0.3s;
+}
+
+.btn-ver:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   GRID SYSTEM
+   ======================================== */
+
+.grid {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.artistas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.categorias-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.localidades-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+
+.card-obra, .card-artista, .card-categoria, .card-localidade {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+}
+
+.card-obra:hover, .card-artista:hover, .card-categoria:hover, .card-localidade:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.obra-image, .localidade-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: var(--gray-light);
+}
+
+.obra-image img, .localidade-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.obra-actions {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.obra-info, .artista-info, .categoria-info, .localidade-info {
+    padding: var(--spacing-md);
+}
+
+.obra-info h3, .artista-info h3 {
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.artista {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.preco {
+    color: var(--primary);
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+/* Card Artista */
+.artista-avatar {
+    width: 120px;
+    height: 120px;
+    margin: var(--spacing-md) auto;
+}
+
+.artista-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card-artista {
+    text-align: center;
+}
+
+.artista-regiao, .artista-categoria {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin: 0.25rem 0;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: var(--spacing-sm) 0;
+}
+
+.badge, .badge-regiao {
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+}
+
+.badge-regiao {
+    background: var(--secondary);
+}
+
+.artista-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.artista-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--spacing-md);
+}
+
+/* Card Categoria */
+.card-categoria-grande {
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.categoria-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.categoria-count {
+    color: var(--gray);
+    margin: var(--spacing-sm) 0;
+}
+
+/* ========================================
+   SEÇÕES
+   ======================================== */
+
+section {
+    padding: var(--spacing-xl) 0;
+}
+
+.welcome-section {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+}
+
+.welcome-section h1 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.welcome-section p {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+h1, h2, h3 {
+    margin-bottom: var(--spacing-md);
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+.obras-header, .explorar-layout .obras-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ========================================
+   EXPLORAR COM FILTROS
+   ======================================== */
+
+.explorar-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: var(--spacing-lg);
+}
+
+.filtros {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.filtro-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.filtro-group h4 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.filtro-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.filtro-group input[type="radio"],
+.filtro-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.filtros-bar {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.filtros-bar form {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filtros-bar select {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    outline: none;
+}
+
+/* ========================================
+   DETALHES DA OBRA
+   ======================================== */
+
+.obra-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.obra-imagem-grande {
+    background: var(--gray-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.obra-imagem-grande img {
+    width: 100%;
+    height: auto;
+}
+
+.obra-info-detalhada h1 {
+    margin-bottom: var(--spacing-md);
+}
+
+.artista-mini {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--light);
+    border-radius: var(--radius-md);
+}
+
+.avatar-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.artista-nome {
+    font-weight: bold;
+}
+
+.artista-regiao {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.obra-tags {
+    margin: var(--spacing-md) 0;
+}
+
+.obra-descricao, .obra-preco {
+    margin: var(--spacing-md) 0;
+}
+
+.preco-grande {
+    font-size: 2rem;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.obra-acoes {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid var(--gray-light);
+    background: white;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-action:hover {
+    background: var(--light);
+    border-color: var(--primary);
+}
+
+.artista-box {
+    background: var(--light);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-top: var(--spacing-md);
+}
+
+.obras-relacionadas h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ========================================
+   PERFIL ARTISTA PÚBLICO
+   ======================================== */
+
+.perfil-header {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.perfil-cover {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.perfil-info {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    margin-top: -60px;
+}
+
+.perfil-avatar {
+    flex-shrink: 0;
+}
+
+.perfil-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    object-fit: cover;
+}
+
+.perfil-dados h1 {
+    margin-bottom: 0.5rem;
+}
+
+.perfil-regiao {
+    color: var(--gray);
+    margin-bottom: var(--spacing-md);
+}
+
+.perfil-stats {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.stat span {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.perfil-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* Tabs */
+.perfil-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.tab {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.sobre-content h2, .sobre-content h3 {
+    margin-top: var(--spacing-md);
+}
+
+/* ========================================
+   FORMULÁRIOS
+   ======================================== */
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="url"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ========================================
+   LOGIN / CADASTRO
+   ======================================== */
+
+.login-section, .cadastro-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light);
+}
+
+.login-card, .cadastro-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+}
+
+.cadastro-card {
+    max-width: 700px;
+}
+
+.login-header, .cadastro-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.login-header h1, .cadastro-header h1 {
+    color: var(--primary);
+}
+
+.alert {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.alert-error {
+    background: #FED7D7;
+    color: #C53030;
+    border: 1px solid #FC8181;
+}
+
+.alert-success {
+    background: #C6F6D5;
+    color: #22543D;
+    border: 1px solid #68D391;
+}
+
+.form-links {
+    text-align: center;
+    margin: var(--spacing-md) 0;
+}
+
+.form-links a {
+    color: var(--primary);
+}
+
+.form-divider {
+    text-align: center;
+    margin: var(--spacing-md) 0;
+    position: relative;
+}
+
+.form-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: var(--gray-light);
+}
+
+.form-divider span {
+    background: white;
+    padding: 0 var(--spacing-sm);
+    position: relative;
+    z-index: 1;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: var(--spacing-md);
+}
+
+/* Cadastro - Steps */
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.tipo-usuario-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.tipo-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.tipo-card input {
+    position: absolute;
+    opacity: 0;
+}
+
+.card-content {
+    border: 3px solid var(--gray-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.tipo-card input:checked + .card-content {
+    border-color: var(--primary);
+    background: rgba(108, 99, 255, 0.1);
+}
+
+.card-content .icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.avatars-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.avatar-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.avatar-option img {
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.avatar-option input:checked + img {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+}
+
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.progress-step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.progress-step.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* ========================================
+   PERFIL PRIVADO
+   ======================================== */
+
+.perfil-header-privado {
+    display: flex;
+    gap: var(--spacing-lg);
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.perfil-avatar-edit {
+    position: relative;
+}
+
+.perfil-avatar-edit img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.btn-edit-avatar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.perfil-info-privado h1 {
+    margin-bottom: 0.5rem;
+}
+
+.perfil-email {
+    color: var(--gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.estatisticas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.stat-info p {
+    margin: 0;
+    color: var(--gray);
+}
+
+.card-obra-gerenciar {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-obra-gerenciar .obra-actions {
+    position: static;
+    justify-content: space-between;
+    margin-top: var(--spacing-sm);
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: white;
+    border-radius: var(--radius-lg);
+}
+
+.config-section {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.danger-zone {
+    border: 2px solid var(--danger);
+}
+
+/* ========================================
+   UPLOAD DE OBRA
+   ======================================== */
+
+.upload-area {
+    border: 3px dashed var(--gray-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.upload-area.dragover {
+    border-color: var(--primary);
+    background: rgba(108, 99, 255, 0.05);
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.upload-icon {
+    font-size: 4rem;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.image-preview {
+    position: relative;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: var(--radius-md);
+}
+
+.btn-remove {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+/* ========================================
+   SOBRE / CONTEÚDO
+   ======================================== */
+
+.sobre-hero {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+}
+
+.lead {
+    font-size: 1.25rem;
+    color: var(--gray);
+}
+
+.content-block {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.funciona-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.funciona-card {
+    background: var(--light);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+}
+
+.funciona-card .icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.funciona-card ul {
+    list-style-position: inside;
+    color: var(--gray);
+}
+
+.funciona-card li {
+    margin-bottom: 0.5rem;
+}
+
+.regioes-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.contato-block {
+    background: var(--light);
+}
+
+.contato-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-md)0;
+}
+.contato-item {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.contato-item .icon {
+font-size: 2rem;
+}
+.contato-form {
+background: white;
+padding: var(--spacing-lg);
+border-radius: var(--radius-md);
+margin-top: var(--spacing-md);
+}
+.cta-block {
+background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+color: white;
+padding: var(--spacing-xl);
+border-radius: var(--radius-lg);
+text-align: center;
+}
+.cta-buttons {
+display: flex;
+gap: var(--spacing-md);
+justify-content: center;
+margin-top: var(--spacing-md);
+}
+/* ========================================
+FOOTER
+======================================== */
+footer {
+background: var(--dark);
+color: white;
+padding: var(--spacing-xl) 0 var(--spacing-md);
+margin-top: var(--spacing-xl);
+}
+.footer-content {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: var(--spacing-lg);
+margin-bottom: var(--spacing-lg);
+}
+.footer-section h3 {
+margin-bottom: var(--spacing-sm);
+}
+.footer-section ul {
+list-style: none;
+}
+.footer-section a {
+color: var(--gray-light);
+transition: color 0.3s;
+}
+.footer-section a:hover {
+color: white;
+}
+.footer-bottom {
+border-top: 1px solid rgba(255,255,255,0.1);
+padding-top: var(--spacing-md);
+text-align: center;
+color: var(--gray);
+}
+/* ========================================
+UTILITÁRIOS
+======================================== */
+.no-results {
+text-align: center;
+padding: var(--spacing-xl);
+color: var(--gray);
+}
+.subtitulo {
+color: var(--gray);
+margin-bottom: var(--spacing-lg);
+}
+/* ========================================
+RESPONSIVIDADE
+======================================== */
+@media (max-width: 768px) {
+.navbar .container {
+flex-wrap: wrap;
+}
+
+.nav-menu {
+    order: 3;
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+.search-form {
+    order: 2;
+    max-width: none;
+}
+
+.explorar-layout {
+    grid-template-columns: 1fr;
+}
+
+.filtros {
+    position: static;
+}
+
+.obra-layout {
+    grid-template-columns: 1fr;
+}
+
+.perfil-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-content {
+    grid-template-columns: 1fr;
+}
+
+.funciona-grid {
+    grid-template-columns: 1fr;
+}
+
+.tipo-usuario-options {
+    grid-template-columns: 1fr;
+}
+
+.avatars-grid {
+    grid-template-columns: repeat(4, 1fr);
+} 
+
+}
