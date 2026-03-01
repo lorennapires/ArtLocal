@@ -19,13 +19,13 @@
     }
 %>
 
-<section class="perfil-section">
+<section class="perfil-section perfil-<%= usuario.getTipoUsuario() %>">
     <div class="container">
         <!-- Header do perfil -->
         <div class="perfil-header-privado">
             <div class="perfil-avatar-edit">
                 <img src="<%= request.getContextPath() %>/images/avatars/<%= usuario.getIdIcone() %>" alt="Avatar">
-                <button class="btn-edit-avatar">✏️ Alterar</button>
+                <button class="btn-edit-avatar" onclick="alert('Funcionalidade em desenvolvimento')">✏️</button>
             </div>
             
             <div class="perfil-info-privado">
@@ -102,8 +102,8 @@
                                     <h3><%= obra.getNomeObra() %></h3>
                                     <p class="obra-stats">❤️ 0 curtidas</p>
                                     <div class="obra-actions">
-                                        <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>" class="btn-small">Ver</a>
-                                        <a href="<%= request.getContextPath() %>/editar-obra?id=<%= obra.getIdObra() %>" class="btn-small">Editar</a>
+                                        <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>" class="btn-small btn-primary">Ver</a>
+                                        <a href="<%= request.getContextPath() %>/editar-obra?id=<%= obra.getIdObra() %>" class="btn-small btn-secondary">Editar</a>
                                     </div>
                                 </div>
                             </div>

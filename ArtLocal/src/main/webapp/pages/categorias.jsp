@@ -17,7 +17,6 @@
             <% if (categorias != null && !categorias.isEmpty()) {
                 for (CategoriaModel categoria : categorias) { %>
                     <div class="card-categoria-grande">
-                        <div class="categoria-icon">🎨</div>
                         <h2><%= categoria.getNomeCategoria() %></h2>
                         <p><%= categoria.getDescricao() != null ? categoria.getDescricao() : "Explore esta categoria" %></p>
                         <p class="categoria-count">X obras</p>

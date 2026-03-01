@@ -16,13 +16,16 @@
     <div class="container">
         <h1>Descubra a Arte de Camaçari</h1>
         <p>Conecte-se com artistas locais e suas obras</p>
-        <a href="<%= request.getContextPath() %>/explorar" class="btn-primary">Explorar Obras</a>
+        <a href="<%= request.getContextPath() %>/explorar" class="btn-primary btn-large">Explorar Obras</a>
     </div>
 </section>
 
 <section class="obras-destaque">
     <div class="container">
-        <h2>Obras em Destaque</h2>
+        <div class="obras-header">
+            <h2>Obras em Destaque</h2>
+            <a href="<%= request.getContextPath() %>/explorar" class="btn-primary">Ver Mais</a>
+        </div>
         <div class="grid">
             <% if (obrasDestaque != null) {
                 for (ObraModel obra : obrasDestaque) { %>
@@ -47,7 +50,10 @@
 
 <section class="artistas-destaque">
     <div class="container">
-        <h2>Artistas em Destaque</h2>
+        <div class="obras-header">
+            <h2>Artistas em Destaque</h2>
+            <a href="<%= request.getContextPath() %>/artistas" class="btn-primary">Ver Mais</a>
+        </div>
         <div class="grid">
             <% if (artistasDestaque != null) {
                 for (UsuarioModel artista : artistasDestaque) { %>
@@ -67,7 +73,10 @@
 
 <section class="categorias-section">
     <div class="container">
-        <h2>Explore por Categoria</h2>
+        <div class="obras-header">
+            <h2>Explore por Categoria</h2>
+            <a href="<%= request.getContextPath() %>/categorias" class="btn-primary">Ver Todas</a>
+        </div>
         <div class="grid">
             <% if (categorias != null) {
                 for (CategoriaModel categoria : categorias) { %>

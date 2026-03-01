@@ -10,7 +10,7 @@
     <div class="container">
         <div class="login-card">
             <div class="login-header">
-                <h1>Entrar no Art Local</h1>
+                <h1>Entrar no ArtLocal</h1>
                 <p>Conecte-se e explore a arte de Camaçari</p>
             </div>
             
