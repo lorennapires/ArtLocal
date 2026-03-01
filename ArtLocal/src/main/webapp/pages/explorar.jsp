@@ -48,8 +48,8 @@
                         } %>
                     </div>
                     
-                    <button type="submit" class="btn-primary">Aplicar Filtros</button>
-                    <a href="<%= request.getContextPath() %>/explorar" class="btn-secondary">Limpar</a>
+                    <button type="submit" class="btn-primary btn-block">Aplicar Filtros</button>
+                    <a href="<%= request.getContextPath() %>/explorar" class="btn-secondary btn-block">Limpar</a>
                 </form>
             </aside>
             
@@ -57,11 +57,14 @@
             <div class="obras-grid">
                 <div class="obras-header">
                     <p><%= obras != null ? obras.size() : 0 %> obras encontradas</p>
-                    <select name="ordem">
-                        <option value="recentes">Mais recentes</option>
-                        <option value="curtidas">Mais curtidas</option>
-                        <option value="preco">Preço</option>
-                    </select>
+                    <form action="<%= request.getContextPath() %>/explorar" method="get" style="margin:0;">
+                        <select name="ordem" onchange="this.form.submit()">
+                            <option value="recentes">Mais recentes</option>
+                            <option value="relevantes">Mais relevantes</option>
+                            <option value="menor-preco">Menor preço</option>
+                            <option value="maior-preco">Maior preço</option>
+                        </select>
+                    </form>
                 </div>
                 
                 <div class="grid">

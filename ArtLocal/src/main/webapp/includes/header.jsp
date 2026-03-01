@@ -10,17 +10,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtLocal - Camaçari</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
+    <link rel="icon" type="image/png" href="<%= request.getContextPath() %>/images/logo.png">
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="container">
-                <div class="logo">ArtLocal</div>
+                <a href="<%= request.getContextPath() %>/home" class="logo-link">
+                    <img src="<%= request.getContextPath() %>/images/logo.png" alt="Logo ArtLocal" class="logo-icon">
+                    <span class="logo">ArtLocal</span>
+                </a>
                 
                 <ul class="nav-menu">
-                    <li><a href="<%= request.getContextPath() %>/home">Home</a></li>
                     <li><a href="<%= request.getContextPath() %>/explorar">Explorar</a></li>
+                    <li><a href="<%= request.getContextPath() %>/artistas">Artistas</a></li>
                     <li><a href="<%= request.getContextPath() %>/categorias">Categorias</a></li>
+                    <li><a href="<%= request.getContextPath() %>/localidades">Localidades</a></li>
                     <li><a href="<%= request.getContextPath() %>/sobre">Sobre</a></li>
                 </ul>
                 

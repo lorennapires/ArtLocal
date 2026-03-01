@@ -3,7 +3,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Art Local</h3>
+                    <h3>ArtLocal</h3>
                     <p>Conectando artistas de Camaçari</p>
                 </div>
                 <div class="footer-section">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Art Local - Camaçari. Todos os direitos reservados.</p>
+                <p>&copy; 2025 ArtLocal - Camaçari. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>

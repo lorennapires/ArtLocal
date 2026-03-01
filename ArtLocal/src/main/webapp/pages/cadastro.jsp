@@ -35,7 +35,6 @@
                         <label class="tipo-card">
                             <input type="radio" name="tipoUsuario" value="visitante" required>
                             <div class="card-content">
-                                <div class="icon">👤</div>
                                 <h3>Visitante</h3>
                                 <p>Explorar obras e seguir artistas</p>
                             </div>
@@ -44,7 +43,6 @@
                         <label class="tipo-card">
                             <input type="radio" name="tipoUsuario" value="artista" required>
                             <div class="card-content">
-                                <div class="icon">🎨</div>
                                 <h3>Artista</h3>
                                 <p>Publicar suas obras e conectar-se com público</p>
                             </div>
@@ -93,7 +91,7 @@
                     <p id="avatarMessage">Selecione um avatar da galeria</p>
                     
                     <div class="avatars-grid" id="avatarsGrid">
-                        <% for (int i = 1; i <= 18; i++) { %>
+                        <% for (int i = 1; i <= 60; i++) { %>
                             <label class="avatar-option">
                                 <input type="radio" name="idIcone" value="avatar<%= i %>.png" required>
                                 <img src="<%= request.getContextPath() %>/images/avatars/avatar<%= i %>.png" alt="Avatar <%= i %>">
@@ -215,8 +213,8 @@
     document.querySelectorAll('input[name="tipoUsuario"]').forEach(radio => {
         radio.addEventListener('change', function() {
             tipoUsuario = this.value;
+            console.log('Tipo selecionado:', tipoUsuario);
             
-            // Mostrar/ocultar opção de upload para artista
             if (tipoUsuario === 'artista') {
                 document.getElementById('avatarMessage').textContent = 'Artistas podem fazer upload de foto própria';
                 document.getElementById('uploadAvatarSection').style.display = 'block';
@@ -228,51 +226,85 @@
     });
     
     function nextStep() {
-        // Validar step atual
+        console.log('NextStep chamado, step atual:', currentStep);
+        
         const currentStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-        const inputs = currentStepDiv.querySelectorAll('input[required], select[required], textarea[required]');
-        let valid = true;
         
-        inputs.forEach(input => {
-            if (!input.value) {
-                valid = false;
-                input.classList.add('error');
-            } else {
-                input.classList.remove('error');
+        // Validação específica para cada step
+        if (currentStep === 1) {
+            const tipoSelecionado = document.querySelector('input[name="tipoUsuario"]:checked');
+            if (!tipoSelecionado) {
+                alert('Por favor, selecione um tipo de usuário');
+                return;
             }
-        });
+            tipoUsuario = tipoSelecionado.value;
+            console.log('Tipo confirmado:', tipoUsuario);
+        }
         
-        // Validar senhas iguais no step 2
         if (currentStep === 2) {
+            const nomeCompleto = document.getElementById('nomeCompleto').value.trim();
+            const email = document.getElementById('email').value.trim();
             const senha = document.getElementById('senha').value;
             const confirmarSenha = document.getElementById('confirmarSenha').value;
+            
+            if (!nomeCompleto || !email || !senha || !confirmarSenha) {
+                alert('Por favor, preencha todos os campos obrigatórios');
+                return;
+            }
+            
             if (senha !== confirmarSenha) {
                 alert('As senhas não coincidem!');
                 return;
             }
         }
         
-        if (!valid) {
-            alert('Por favor, preencha todos os campos obrigatórios');
-            return;
+        if (currentStep === 3) {
+            const avatarSelecionado = document.querySelector('input[name="idIcone"]:checked');
+            if (!avatarSelecionado) {
+                alert('Por favor, selecione um avatar');
+                return;
+            }
+        }
+        
+        if (currentStep === 4) {
+            const regiao = document.getElementById('idRegiao').value;
+            if (!regiao) {
+                alert('Por favor, selecione sua região');
+                return;
+            }
         }
         
         // Ocultar step atual
         currentStepDiv.classList.remove('active');
         
+        // Atualizar progresso antes de mudar step
+        document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+        
         currentStep++;
+        console.log('Próximo step:', currentStep);
         
         // No step 5, decidir qual mostrar baseado no tipo
         if (currentStep === 5) {
+            const stepArtista = document.getElementById('stepArtista');
+            const stepVisitante = document.getElementById('stepVisitante');
+            
             if (tipoUsuario === 'artista') {
-                document.getElementById('stepArtista').classList.add('active');
-                document.getElementById('stepVisitante').style.display = 'none';
+                console.log('Mostrando step artista');
+                stepArtista.classList.add('active');
+                stepVisitante.style.display = 'none';
             } else {
-                document.getElementById('stepVisitante').classList.add('active');
-                document.getElementById('stepArtista').style.display = 'none';
+                console.log('Mostrando step visitante');
+                stepVisitante.classList.add('active');
+                stepArtista.style.display = 'none';
             }
         } else {
-            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            const nextStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+            if (nextStepDiv) {
+                nextStepDiv.classList.add('active');
+                console.log('Step', currentStep, 'ativado');
+            } else {
+                console.error('Step', currentStep, 'não encontrado!');
+            }
         }
         
         // Atualizar indicador de progresso
@@ -280,13 +312,39 @@
     }
     
     function prevStep() {
-        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+        console.log('PrevStep chamado, step atual:', currentStep);
+        
+        // Remover active do step atual
+        let currentStepDiv;
+        if (currentStep === 5) {
+            if (tipoUsuario === 'artista') {
+                currentStepDiv = document.getElementById('stepArtista');
+            } else {
+                currentStepDiv = document.getElementById('stepVisitante');
+            }
+        } else {
+            currentStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+        }
+        
+        if (currentStepDiv) {
+            currentStepDiv.classList.remove('active');
+        }
+        
+        // Remover do progresso
         document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
         
         currentStep--;
+        console.log('Step anterior:', currentStep);
         
-        document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+        // Mostrar step anterior
+        const prevStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+        if (prevStepDiv) {
+            prevStepDiv.classList.add('active');
+        }
     }
+    
+    // Log inicial para debug
+    console.log('Script carregado, step inicial:', currentStep);
 </script>
 
 <jsp:include page="/includes/footer.jsp" />

@@ -68,7 +68,9 @@ public class RegiaoDAO {
     }
 
     public List<RegiaoModel> listarTodas() {
-        String sql = "SELECT * FROM regiao ORDER BY nome_regiao";
+        String sql = "SELECT * FROM regiao ORDER BY " +
+                     "CASE WHEN nome_regiao = 'Camaçari (Sede)' THEN 0 ELSE 1 END, " +
+                     "nome_regiao";
         List<RegiaoModel> regioes = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stmt = null;

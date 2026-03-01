@@ -44,6 +44,25 @@ public class ExplorarServlet extends HttpServlet {
             obras = obraDAO.listarTodas();
         }
         
+        // Aplicar ordenação
+        if ("menor-preco".equals(ordenacao)) {
+            obras.sort((o1, o2) -> {
+                if (o1.getPreco() == null) return 1;
+                if (o2.getPreco() == null) return -1;
+                return o1.getPreco().compareTo(o2.getPreco());
+            });
+        } else if ("maior-preco".equals(ordenacao)) {
+            obras.sort((o1, o2) -> {
+                if (o1.getPreco() == null) return 1;
+                if (o2.getPreco() == null) return -1;
+                return o2.getPreco().compareTo(o1.getPreco());
+            });
+        } else if ("relevantes".equals(ordenacao)) {
+            // TODO: Implementar ordenação por curtidas
+            // Por enquanto, manter ordem padrão
+        }
+        // Se "recentes" ou null, manter ordem padrão (já vem do banco por data_criacao DESC)
+        
         // Buscar dados para os filtros
         List<CategoriaModel> categorias = categoriaDAO.listarTodas();
         List<RegiaoModel> regioes = regiaoDAO.listarTodas();
