@@ -15,139 +15,126 @@
     <div class="container">
         <div class="cadastro-card">
             <div class="cadastro-header">
-                <h1>Criar Conta no Art Local</h1>
+                <h1>Criar Conta no ArtLocal</h1>
                 <p>Junte-se à comunidade artística de Camaçari</p>
             </div>
-            
+
             <% if (erro != null) { %>
-                <div class="alert alert-error">
-                    <%= erro %>
-                </div>
+                <div class="alert alert-error"><%= erro %></div>
             <% } %>
-            
-            <form action="<%= request.getContextPath() %>/cadastro" method="post" class="cadastro-form" id="formCadastro">
-                
-                <!-- Step 1: Tipo de usuário -->
-                <div class="form-step active" data-step="1">
+
+            <form action="<%= request.getContextPath() %>/cadastro" method="post" id="formCadastro">
+
+                <%-- STEP 1: Tipo de usuário --%>
+                <div class="form-step" data-step="1">
                     <h2>Como você quer se cadastrar?</h2>
-                    
                     <div class="tipo-usuario-options">
                         <label class="tipo-card">
-                            <input type="radio" name="tipoUsuario" value="visitante" required>
+                            <input type="radio" name="tipoUsuario" value="visitante">
                             <div class="card-content">
                                 <h3>Visitante</h3>
                                 <p>Explorar obras e seguir artistas</p>
                             </div>
                         </label>
-                        
                         <label class="tipo-card">
-                            <input type="radio" name="tipoUsuario" value="artista" required>
+                            <input type="radio" name="tipoUsuario" value="artista">
                             <div class="card-content">
                                 <h3>Artista</h3>
-                                <p>Publicar suas obras e conectar-se com público</p>
+                                <p>Publicar suas obras e conectar-se com o público</p>
                             </div>
                         </label>
                     </div>
-                    
                     <div class="form-actions">
                         <button type="button" class="btn-primary" onclick="nextStep()">Próximo</button>
                     </div>
                 </div>
-                
-                <!-- Step 2: Dados básicos -->
+
+                <%-- STEP 2: Dados básicos --%>
                 <div class="form-step" data-step="2">
                     <h2>Dados Básicos</h2>
-                    
                     <div class="form-group">
                         <label for="nomeCompleto">Nome Completo *</label>
-                        <input type="text" id="nomeCompleto" name="nomeCompleto" required>
+                        <input type="text" id="nomeCompleto" name="nomeCompleto">
                     </div>
-                    
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email">
                     </div>
-                    
                     <div class="form-group">
                         <label for="senha">Senha *</label>
-                        <input type="password" id="senha" name="senha" required minlength="6">
+                        <input type="password" id="senha" name="senha">
                         <small>Mínimo 6 caracteres</small>
                     </div>
-                    
                     <div class="form-group">
                         <label for="confirmarSenha">Confirmar Senha *</label>
-                        <input type="password" id="confirmarSenha" name="confirmarSenha" required>
+                        <input type="password" id="confirmarSenha" name="confirmarSenha">
                     </div>
-                    
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="prevStep()">Voltar</button>
                         <button type="button" class="btn-primary" onclick="nextStep()">Próximo</button>
                     </div>
                 </div>
-                
-                <!-- Step 3: Avatar -->
+
+                <%-- STEP 3: Avatar --%>
                 <div class="form-step" data-step="3">
                     <h2>Escolha seu Avatar</h2>
                     <p id="avatarMessage">Selecione um avatar da galeria</p>
-                    
+
                     <div class="avatars-grid" id="avatarsGrid">
                         <% for (int i = 1; i <= 60; i++) { %>
                             <label class="avatar-option">
-                                <input type="radio" name="idIcone" value="avatar<%= i %>.png" required>
-                                <img src="<%= request.getContextPath() %>/images/avatars/avatar<%= i %>.png" alt="Avatar <%= i %>">
+                                <input type="radio" name="idIcone" value="avatar<%= i %>.png">
+                                <img src="<%= request.getContextPath() %>/images/avatares/avatar<%= i %>.png"
+                                     alt="Avatar <%= i %>">
                             </label>
                         <% } %>
                     </div>
-                    
+
                     <div id="uploadAvatarSection" style="display:none;">
-                        <div class="form-group">
+                        <div class="form-group" style="margin-top:1rem;">
                             <label>Ou faça upload de sua foto</label>
                             <input type="file" name="avatarUpload" accept="image/*">
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="prevStep()">Voltar</button>
                         <button type="button" class="btn-primary" onclick="nextStep()">Próximo</button>
                     </div>
                 </div>
-                
-                <!-- Step 4: Localização -->
+
+                <%-- STEP 4: Localização --%>
                 <div class="form-step" data-step="4">
                     <h2>Localização</h2>
-                    
                     <div class="form-group">
                         <label for="idRegiao">Selecione sua região em Camaçari *</label>
-                        <select id="idRegiao" name="idRegiao" required>
+                        <select id="idRegiao" name="idRegiao">
                             <option value="">Selecione...</option>
                             <% if (regioes != null) {
                                 for (RegiaoModel regiao : regioes) { %>
                                     <option value="<%= regiao.getIdRegiao() %>"><%= regiao.getNomeRegiao() %></option>
                             <%  }
-                            } %>
+                               } %>
                         </select>
                     </div>
-                    
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="prevStep()">Voltar</button>
                         <button type="button" class="btn-primary" onclick="nextStep()">Próximo</button>
                     </div>
                 </div>
-                
-                <!-- Step 5: Dados do Artista (condicional) -->
-                <div class="form-step" data-step="5" id="stepArtista">
+
+                <%-- STEP 5A: Dados do Artista --%>
+                <div class="form-step" id="stepArtista">
                     <h2>Dados do Artista</h2>
-                    
                     <div class="form-group">
                         <label for="nomeArtistico">Nome Artístico *</label>
                         <input type="text" id="nomeArtistico" name="nomeArtistico">
                     </div>
-                    
                     <div class="form-group">
                         <label for="biografia">Biografia</label>
-                        <textarea id="biografia" name="biografia" rows="4" placeholder="Conte um pouco sobre você e sua arte..."></textarea>
+                        <textarea id="biografia" name="biografia" rows="4"
+                            placeholder="Conte um pouco sobre você e sua arte..."></textarea>
                     </div>
-                    
                     <div class="form-group">
                         <label for="categoriaPrincipal">Categoria Principal</label>
                         <select id="categoriaPrincipal" name="categoriaPrincipal">
@@ -156,48 +143,47 @@
                                 for (CategoriaModel categoria : categorias) { %>
                                     <option value="<%= categoria.getIdCategoria() %>"><%= categoria.getNomeCategoria() %></option>
                             <%  }
-                            } %>
+                               } %>
                         </select>
                     </div>
-                    
                     <div class="form-group">
                         <label for="tagsPrincipais">Tags Principais</label>
-                        <input type="text" id="tagsPrincipais" name="tagsPrincipais" placeholder="Ex: aquarela, paisagem, realismo">
+                        <input type="text" id="tagsPrincipais" name="tagsPrincipais"
+                               placeholder="Ex: aquarela, paisagem, realismo">
                         <small>Separe as tags por vírgula</small>
                     </div>
-                    
                     <div class="form-group">
                         <label for="portfolio">Link do Portfólio (opcional)</label>
                         <input type="url" id="portfolio" name="portfolio" placeholder="https://...">
                     </div>
-                    
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="prevStep()">Voltar</button>
                         <button type="submit" class="btn-primary">Finalizar Cadastro</button>
                     </div>
                 </div>
-                
-                <!-- Step final para visitante -->
-                <div class="form-step" data-step="5" id="stepVisitante">
+
+                <%-- STEP 5B: Finalizar Visitante --%>
+                <div class="form-step" id="stepVisitante">
                     <h2>Tudo Pronto!</h2>
-                    <p>Clique em finalizar para criar sua conta</p>
-                    
+                    <p style="margin-bottom: 1.5rem; color: var(--gray);">
+                        Sua conta de visitante está pronta para ser criada.
+                    </p>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="prevStep()">Voltar</button>
                         <button type="submit" class="btn-primary">Finalizar Cadastro</button>
                     </div>
                 </div>
-                
-                <!-- Indicador de progresso -->
+
+                <%-- Indicador de progresso --%>
                 <div class="progress-indicator">
-                    <div class="progress-step active" data-step="1">1</div>
+                    <div class="progress-step" data-step="1">1</div>
                     <div class="progress-step" data-step="2">2</div>
                     <div class="progress-step" data-step="3">3</div>
                     <div class="progress-step" data-step="4">4</div>
                     <div class="progress-step" data-step="5">5</div>
                 </div>
             </form>
-            
+
             <div class="form-footer">
                 <p>Já tem conta? <a href="<%= request.getContextPath() %>/login">Faça login</a></p>
             </div>
@@ -208,13 +194,10 @@
 <script>
     let currentStep = 1;
     let tipoUsuario = '';
-    
-    // Detectar mudança no tipo de usuário
-    document.querySelectorAll('input[name="tipoUsuario"]').forEach(radio => {
+
+    document.querySelectorAll('input[name="tipoUsuario"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
             tipoUsuario = this.value;
-            console.log('Tipo selecionado:', tipoUsuario);
-            
             if (tipoUsuario === 'artista') {
                 document.getElementById('avatarMessage').textContent = 'Artistas podem fazer upload de foto própria';
                 document.getElementById('uploadAvatarSection').style.display = 'block';
@@ -224,127 +207,88 @@
             }
         });
     });
-    
-    function nextStep() {
-        console.log('NextStep chamado, step atual:', currentStep);
-        
-        const currentStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-        
-        // Validação específica para cada step
-        if (currentStep === 1) {
-            const tipoSelecionado = document.querySelector('input[name="tipoUsuario"]:checked');
-            if (!tipoSelecionado) {
-                alert('Por favor, selecione um tipo de usuário');
-                return;
+
+    function showStep(stepNum) {
+        document.querySelectorAll('.form-step[data-step]').forEach(function(s) {
+            s.classList.remove('active');
+        });
+        document.getElementById('stepArtista').classList.remove('active');
+        document.getElementById('stepVisitante').classList.remove('active');
+
+        if (stepNum === 5) {
+            if (tipoUsuario === 'artista') {
+                document.getElementById('stepArtista').classList.add('active');
+            } else {
+                document.getElementById('stepVisitante').classList.add('active');
             }
-            tipoUsuario = tipoSelecionado.value;
-            console.log('Tipo confirmado:', tipoUsuario);
+        } else {
+            var el = document.querySelector('.form-step[data-step="' + stepNum + '"]');
+            if (el) el.classList.add('active');
         }
-        
-        if (currentStep === 2) {
-            const nomeCompleto = document.getElementById('nomeCompleto').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const senha = document.getElementById('senha').value;
-            const confirmarSenha = document.getElementById('confirmarSenha').value;
-            
-            if (!nomeCompleto || !email || !senha || !confirmarSenha) {
-                alert('Por favor, preencha todos os campos obrigatórios');
+
+        document.querySelectorAll('.progress-step').forEach(function(p) {
+            var s = parseInt(p.getAttribute('data-step'));
+            if (s <= stepNum) {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+    }
+
+    function nextStep() {
+        if (currentStep === 1) {
+            var sel = document.querySelector('input[name="tipoUsuario"]:checked');
+            if (!sel) {
+                alert('Por favor, selecione se você é Visitante ou Artista.');
                 return;
             }
-            
-            if (senha !== confirmarSenha) {
+            tipoUsuario = sel.value;
+        }
+        if (currentStep === 2) {
+            var nome  = document.getElementById('nomeCompleto').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var senha = document.getElementById('senha').value;
+            var conf  = document.getElementById('confirmarSenha').value;
+            if (!nome || !email || !senha || !conf) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            if (senha.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+            if (senha !== conf) {
                 alert('As senhas não coincidem!');
                 return;
             }
         }
-        
         if (currentStep === 3) {
-            const avatarSelecionado = document.querySelector('input[name="idIcone"]:checked');
-            if (!avatarSelecionado) {
-                alert('Por favor, selecione um avatar');
+            var av = document.querySelector('input[name="idIcone"]:checked');
+            if (!av) {
+                alert('Por favor, selecione um avatar.');
                 return;
             }
         }
-        
         if (currentStep === 4) {
-            const regiao = document.getElementById('idRegiao').value;
-            if (!regiao) {
-                alert('Por favor, selecione sua região');
+            var reg = document.getElementById('idRegiao').value;
+            if (!reg) {
+                alert('Por favor, selecione sua região.');
                 return;
             }
         }
-        
-        // Ocultar step atual
-        currentStepDiv.classList.remove('active');
-        
-        // Atualizar progresso antes de mudar step
-        document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
-        
         currentStep++;
-        console.log('Próximo step:', currentStep);
-        
-        // No step 5, decidir qual mostrar baseado no tipo
-        if (currentStep === 5) {
-            const stepArtista = document.getElementById('stepArtista');
-            const stepVisitante = document.getElementById('stepVisitante');
-            
-            if (tipoUsuario === 'artista') {
-                console.log('Mostrando step artista');
-                stepArtista.classList.add('active');
-                stepVisitante.style.display = 'none';
-            } else {
-                console.log('Mostrando step visitante');
-                stepVisitante.classList.add('active');
-                stepArtista.style.display = 'none';
-            }
-        } else {
-            const nextStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-            if (nextStepDiv) {
-                nextStepDiv.classList.add('active');
-                console.log('Step', currentStep, 'ativado');
-            } else {
-                console.error('Step', currentStep, 'não encontrado!');
-            }
-        }
-        
-        // Atualizar indicador de progresso
-        document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+        showStep(currentStep);
     }
-    
+
     function prevStep() {
-        console.log('PrevStep chamado, step atual:', currentStep);
-        
-        // Remover active do step atual
-        let currentStepDiv;
-        if (currentStep === 5) {
-            if (tipoUsuario === 'artista') {
-                currentStepDiv = document.getElementById('stepArtista');
-            } else {
-                currentStepDiv = document.getElementById('stepVisitante');
-            }
-        } else {
-            currentStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-        }
-        
-        if (currentStepDiv) {
-            currentStepDiv.classList.remove('active');
-        }
-        
-        // Remover do progresso
-        document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
-        
-        currentStep--;
-        console.log('Step anterior:', currentStep);
-        
-        // Mostrar step anterior
-        const prevStepDiv = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-        if (prevStepDiv) {
-            prevStepDiv.classList.add('active');
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
         }
     }
-    
-    // Log inicial para debug
-    console.log('Script carregado, step inicial:', currentStep);
+
+    showStep(1);
 </script>
 
 <jsp:include page="/includes/footer.jsp" />

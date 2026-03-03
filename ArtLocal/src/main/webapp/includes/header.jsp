@@ -17,8 +17,8 @@
         <nav class="navbar">
             <div class="container">
                 <a href="<%= request.getContextPath() %>/home" class="logo-link">
-                    <img src="<%= request.getContextPath() %>/images/logo.png" alt="Logo ArtLocal" class="logo-icon">
-                    <span class="logo">ArtLocal</span>
+                <img src="<%= request.getContextPath() %>/images/LogoArtLocal.png" alt="Logo ArtLocal" class="logo-icon">                    
+                <span class="logo">ArtLocal</span>
                 </a>
                 
                 <ul class="nav-menu">
