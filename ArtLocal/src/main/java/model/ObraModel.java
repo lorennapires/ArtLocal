@@ -12,12 +12,12 @@ public class ObraModel {
     private String linkExterno;
     private BigDecimal preco;
     private LocalDateTime dataCriacao;
+    private String imagemObra;
 
-    public ObraModel() {
-    }
+    public ObraModel() {}
 
-    public ObraModel(Integer idObra, Integer idUsuario, Integer idCategoria, 
-                     String nomeObra, String descricao, String linkExterno, 
+    public ObraModel(Integer idObra, Integer idUsuario, Integer idCategoria,
+                     String nomeObra, String descricao, String linkExterno,
                      BigDecimal preco, LocalDateTime dataCriacao) {
         this.idObra = idObra;
         this.idUsuario = idUsuario;
@@ -29,79 +29,35 @@ public class ObraModel {
         this.dataCriacao = dataCriacao;
     }
 
-    public Integer getIdObra() {
-        return idObra;
-    }
+    public Integer getIdObra() { return idObra; }
+    public void setIdObra(Integer idObra) { this.idObra = idObra; }
 
-    public void setIdObra(Integer idObra) {
-        this.idObra = idObra;
-    }
+    public Integer getIdUsuario() { return idUsuario; }
+    public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
+    public Integer getIdCategoria() { return idCategoria; }
+    public void setIdCategoria(Integer idCategoria) { this.idCategoria = idCategoria; }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public String getNomeObra() { return nomeObra; }
+    public void setNomeObra(String nomeObra) { this.nomeObra = nomeObra; }
 
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
-    }
+    public String getLinkExterno() { return linkExterno; }
+    public void setLinkExterno(String linkExterno) { this.linkExterno = linkExterno; }
 
-    public String getNomeObra() {
-        return nomeObra;
-    }
+    public BigDecimal getPreco() { return preco; }
+    public void setPreco(BigDecimal preco) { this.preco = preco; }
 
-    public void setNomeObra(String nomeObra) {
-        this.nomeObra = nomeObra;
-    }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getLinkExterno() {
-        return linkExterno;
-    }
-
-    public void setLinkExterno(String linkExterno) {
-        this.linkExterno = linkExterno;
-    }
-
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+    public String getImagemObra() { return imagemObra; }
+    public void setImagemObra(String imagemObra) { this.imagemObra = imagemObra; }
 
     @Override
     public String toString() {
-        return "ObraModel{" +
-                "idObra=" + idObra +
-                ", idUsuario=" + idUsuario +
-                ", idCategoria=" + idCategoria +
-                ", nomeObra='" + nomeObra + '\'' +
-                ", preco=" + preco +
-                ", dataCriacao=" + dataCriacao +
-                '}';
+        return "ObraModel{idObra=" + idObra + ", nomeObra='" + nomeObra + "', imagemObra='" + imagemObra + "'}";
     }
 }

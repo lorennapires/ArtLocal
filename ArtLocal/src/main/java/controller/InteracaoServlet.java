@@ -15,50 +15,51 @@ import model.InteracaoModel;
 public class InteracaoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // Verificar se está logado
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuarioLogado") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"erro\": \"Usuário não logado\"}");
+            response.sendRedirect("login");
             return;
         }
-        
+
         UsuarioModel usuario = (UsuarioModel) session.getAttribute("usuarioLogado");
-        
-        String acao = request.getParameter("acao");
-        String tipo = request.getParameter("tipo");
-        String idObraStr = request.getParameter("idObra");
+
+        String acao               = request.getParameter("acao");
+        String tipo               = request.getParameter("tipo");
+        String idObraStr          = request.getParameter("idObra");
         String idUsuarioSeguidoStr = request.getParameter("idUsuarioSeguido");
-        
+        String redirect           = request.getParameter("redirect");
+
         InteracaoDAO interacaoDAO = new InteracaoDAO();
-        
+
         Integer idObra = (idObraStr != null && !idObraStr.isEmpty()) ? Integer.parseInt(idObraStr) : null;
-        Integer idUsuarioSeguido = (idUsuarioSeguidoStr != null && !idUsuarioSeguidoStr.isEmpty()) ? Integer.parseInt(idUsuarioSeguidoStr) : null;
-        
+        Integer idUsuarioSeguido = (idUsuarioSeguidoStr != null && !idUsuarioSeguidoStr.isEmpty())
+                                   ? Integer.parseInt(idUsuarioSeguidoStr) : null;
+
         if ("adicionar".equals(acao)) {
-            // Verificar se já existe
             if (!interacaoDAO.verificarInteracao(usuario.getIdUsuario(), tipo, idObra, idUsuarioSeguido)) {
                 InteracaoModel interacao = new InteracaoModel();
                 interacao.setIdUsuario(usuario.getIdUsuario());
                 interacao.setIdObra(idObra);
                 interacao.setIdUsuarioSeguido(idUsuarioSeguido);
                 interacao.setTipo(tipo);
-                
                 interacaoDAO.inserir(interacao);
-                response.getWriter().write("{\"sucesso\": true}");
-            } else {
-                response.getWriter().write("{\"sucesso\": false, \"mensagem\": \"Já existe\"}");
             }
         } else if ("remover".equals(acao)) {
             interacaoDAO.deletar(usuario.getIdUsuario(), tipo, idObra, idUsuarioSeguido);
-            response.getWriter().write("{\"sucesso\": true}");
+        }
+
+        if (redirect != null && !redirect.isEmpty()) {
+            response.sendRedirect(redirect);
+        } else {
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer != null ? referer : "explorar");
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }

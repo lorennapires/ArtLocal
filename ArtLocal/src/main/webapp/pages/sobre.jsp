@@ -4,32 +4,28 @@
 
 <section class="sobre-section">
     <div class="container">
-        <!-- Hero -->
         <div class="sobre-hero">
             <h1>Sobre o ArtLocal</h1>
             <p class="lead">Conectando artistas e arte em Camaçari</p>
         </div>
-        
-        <!-- O que é -->
+
         <div class="sobre-content">
             <div class="content-block">
                 <h2>O que é o ArtLocal?</h2>
                 <p>O ArtLocal é uma plataforma digital criada para valorizar e promover artistas independentes de Camaçari e suas nove regiões. Nossa missão é criar uma ponte entre artistas locais e pessoas interessadas em arte, facilitando a descoberta, divulgação e comercialização de obras de arte produzidas em nossa cidade.</p>
                 <p>Através do ArtLocal, artistas podem criar perfis, publicar suas obras, conectar-se com o público e outros artistas, enquanto visitantes podem explorar a rica diversidade artística de Camaçari, seguir seus artistas favoritos e descobrir novas obras.</p>
             </div>
-            
+
             <div class="content-block">
                 <h2>Por que Camaçari?</h2>
                 <p>Camaçari possui uma rica cena artística que merece ser reconhecida e valorizada. Das praias de Arembepe e Guarajuba à sede do município, cada uma das nove regiões de Camaçari contribui com sua identidade cultural única para o cenário artístico local.</p>
                 <p>Nosso objetivo é dar visibilidade a esses talentos locais, facilitando o acesso do público à arte produzida em nossa região e fortalecendo a economia criativa local.</p>
             </div>
-            
-            <!-- Como Funciona -->
+
             <div class="content-block">
                 <h2>Como Funciona</h2>
-                
                 <div class="funciona-grid">
-                    <div class="funciona-card">                    
+                    <div class="funciona-card">
                         <h3>Para Artistas</h3>
                         <ul>
                             <li>Crie seu perfil artístico</li>
@@ -39,7 +35,6 @@
                             <li>Receba feedback através de curtidas e seguidores</li>
                         </ul>
                     </div>
-                    
                     <div class="funciona-card">
                         <h3>Para Visitantes</h3>
                         <ul>
@@ -52,8 +47,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Regiões de Camaçari -->
+
             <div class="content-block">
                 <h2>As 9 Regiões de Camaçari</h2>
                 <p>Nossa plataforma representa toda a diversidade de Camaçari através de suas nove regiões:</p>
@@ -61,6 +55,7 @@
                     <span class="badge-regiao">Camaçari (Sede)</span>
                     <span class="badge-regiao">Arembepe</span>
                     <span class="badge-regiao">Barra do Jacuípe</span>
+                    <span class="badge-regiao">Barra do Pojuca</span>
                     <span class="badge-regiao">Barra do Pojuca</span>                 
                     <span class="badge-regiao">Guarajuba</span>
                     <span class="badge-regiao">Itacimirim</span>
@@ -74,8 +69,7 @@
             <!-- Contato -->
             <div class="content-block contato-block">
                 <h2>Entre em Contato</h2>
-                <p>Tem sugestões, dúvidas ou quer saber mais sobre o Art Local?</p>
-                
+                <p>Tem sugestões, dúvidas ou quer saber mais sobre o ArtLocal?</p>
                 <div class="contato-info">
                     <div class="contato-item">
                         <span class="icon">📧</span>
@@ -84,7 +78,6 @@
                             <p>contato@artlocal.com</p>
                         </div>
                     </div>
-                    
                     <div class="contato-item">
                         <span class="icon">📱</span>
                         <div>
@@ -93,30 +86,8 @@
                         </div>
                     </div>
                 </div>
-                
-                <form action="#" method="post" class="contato-form">
-                    <h3>Envie uma Mensagem</h3>
-                    
-                    <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" id="nome" name="nome" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="emailContato">Email</label>
-                        <input type="email" id="emailContato" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary">Enviar Mensagem</button>
-                </form>
             </div>
-            
-            <!-- CTA Final -->
+
             <div class="cta-block">
                 <h2>Faça Parte do ArtLocal</h2>
                 <p>Junte-se à nossa comunidade e ajude a fortalecer a arte em Camaçari</p>

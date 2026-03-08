@@ -3,6 +3,8 @@ package model;
 public class RegiaoModel {
     private Integer idRegiao;
     private String nomeRegiao;
+    private int totalArtistas;
+    private int totalObras;
 
     public RegiaoModel() {
     }
@@ -28,11 +30,29 @@ public class RegiaoModel {
         this.nomeRegiao = nomeRegiao;
     }
 
+    public int getTotalArtistas() {
+        return totalArtistas;
+    }
+
+    public void setTotalArtistas(int totalArtistas) {
+        this.totalArtistas = totalArtistas;
+    }
+
+    public int getTotalObras() {
+        return totalObras;
+    }
+
+    public void setTotalObras(int totalObras) {
+        this.totalObras = totalObras;
+    }
+
     @Override
     public String toString() {
         return "RegiaoModel{" +
                 "idRegiao=" + idRegiao +
                 ", nomeRegiao='" + nomeRegiao + '\'' +
+                ", totalArtistas=" + totalArtistas +
+                ", totalObras=" + totalObras +
                 '}';
     }
 }

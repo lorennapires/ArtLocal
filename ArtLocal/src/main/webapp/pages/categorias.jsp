@@ -10,22 +10,25 @@
 
 <section class="categorias-section">
     <div class="container">
-        <h1>Categorias de Arte</h1>
-        <p class="subtitulo">Explore obras por categoria artística</p>
-        
+        <h1>Categorias</h1>
+        <p style="color:var(--gray); margin-bottom:var(--spacing-lg);">
+            Explore obras por tipo de expressão artística.
+        </p>
+
         <div class="grid categorias-grid">
-            <% if (categorias != null && !categorias.isEmpty()) {
-                for (CategoriaModel categoria : categorias) { %>
-                    <div class="card-categoria-grande">
-                        <h2><%= categoria.getNomeCategoria() %></h2>
-                        <p><%= categoria.getDescricao() != null ? categoria.getDescricao() : "Explore esta categoria" %></p>
-                        <p class="categoria-count">X obras</p>
-                        <a href="<%= request.getContextPath() %>/explorar?categoria=<%= categoria.getIdCategoria() %>" class="btn-primary">Explorar</a>
+            <% if (categorias != null) {
+                for (CategoriaModel cat : categorias) { %>
+                    <div class="card-categoria">
+                        <div class="categoria-info">
+                            <h3><%= cat.getNomeCategoria() %></h3>
+                            <% if (cat.getDescricao() != null) { %>
+                                <p><%= cat.getDescricao() %></p>
+                            <% } %>
+                            <a href="<%= request.getContextPath() %>/explorar?categoria=<%= cat.getIdCategoria() %>"
+                               class="btn-ver">Explorar Categoria</a>
+                        </div>
                     </div>
-            <%  }
-            } else { %>
-                <p>Nenhuma categoria cadastrada.</p>
-            <% } %>
+            <% } } %>
         </div>
     </div>
 </section>

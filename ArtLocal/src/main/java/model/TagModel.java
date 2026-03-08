@@ -3,13 +3,15 @@ package model;
 public class TagModel {
     private Integer idTag;
     private String nomeTag;
+    private Integer idCategoria;
 
     public TagModel() {
     }
 
-    public TagModel(Integer idTag, String nomeTag) {
+    public TagModel(Integer idTag, String nomeTag, Integer idCategoria) {
         this.idTag = idTag;
         this.nomeTag = nomeTag;
+        this.idCategoria = idCategoria;
     }
 
     public Integer getIdTag() {
@@ -28,11 +30,20 @@ public class TagModel {
         this.nomeTag = nomeTag;
     }
 
+    public Integer getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Integer idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
     @Override
     public String toString() {
         return "TagModel{" +
                 "idTag=" + idTag +
                 ", nomeTag='" + nomeTag + '\'' +
+                ", idCategoria=" + idCategoria +
                 '}';
     }
 }

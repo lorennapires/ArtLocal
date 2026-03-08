@@ -16,32 +16,27 @@ import model.RegiaoModel;
 public class LocalidadesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         RegiaoDAO regiaoDAO = new RegiaoDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         ObraDAO obraDAO = new ObraDAO();
-        
-        // Buscar todas as regiões
+
         List<RegiaoModel> regioes = regiaoDAO.listarTodas();
-        
-        // Para cada região, contar artistas e obras
+
         for (RegiaoModel regiao : regioes) {
             int totalArtistas = usuarioDAO.listarArtistasPorRegiao(regiao.getIdRegiao()).size();
             int totalObras = obraDAO.listarPorRegiao(regiao.getIdRegiao()).size();
-            
-            // Adicionar informações como atributos (criar getters/setters extras se necessário)
-            // Ou usar Map para passar essas informações
+            regiao.setTotalArtistas(totalArtistas);
+            regiao.setTotalObras(totalObras);
         }
-        
-        // Enviar para JSP
+
         request.setAttribute("regioes", regioes);
-        
         request.getRequestDispatcher("/pages/localidades.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }

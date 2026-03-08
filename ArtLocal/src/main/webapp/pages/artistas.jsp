@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="model.UsuarioModel" %>
 <%@ page import="model.RegiaoModel" %>
 <%@ page import="model.CategoriaModel" %>
@@ -10,13 +11,17 @@
     List<UsuarioModel> artistas = (List<UsuarioModel>) request.getAttribute("artistas");
     List<RegiaoModel> regioes = (List<RegiaoModel>) request.getAttribute("regioes");
     List<CategoriaModel> categorias = (List<CategoriaModel>) request.getAttribute("categorias");
+    Map<Integer, String> nomesRegioes = (Map<Integer, String>) request.getAttribute("nomesRegioes");
+    Map<Integer, String> nomesCategorias = (Map<Integer, String>) request.getAttribute("nomesCategorias");
+    Map<Integer, String> nomesTags = (Map<Integer, String>) request.getAttribute("nomesTags");
+
+    UsuarioModel usuarioLogado = (UsuarioModel) session.getAttribute("usuarioLogado");
 %>
 
 <section class="artistas-section">
     <div class="container">
         <h1>Artistas de Camaçari</h1>
-        
-        <!-- Filtros -->
+
         <div class="filtros-bar">
             <form action="<%= request.getContextPath() %>/artistas" method="get">
                 <select name="regiao">
@@ -24,52 +29,61 @@
                     <% if (regioes != null) {
                         for (RegiaoModel regiao : regioes) { %>
                             <option value="<%= regiao.getIdRegiao() %>"><%= regiao.getNomeRegiao() %></option>
-                    <%  }
-                    } %>
+                    <%  } } %>
                 </select>
-                
                 <select name="ordem">
                     <option value="alfabetica">Ordem Alfabética</option>
-                    <option value="seguidores">Mais Seguidos</option>
                     <option value="recentes">Mais Recentes</option>
                 </select>
-                
                 <button type="submit" class="btn-primary">Filtrar</button>
             </form>
         </div>
-        
-        <!-- Grid de artistas -->
+
         <div class="grid artistas-grid">
             <% if (artistas != null && !artistas.isEmpty()) {
-                for (UsuarioModel artista : artistas) { %>
-                    <div class="card-artista">
-                        <div class="artista-avatar">
-                            <img src="<%= request.getContextPath() %>/images/avatars/<%= artista.getIdIcone() %>" alt="<%= artista.getNomeArtistico() %>">
-                        </div>
-                        <h3><%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %></h3>
-                        <p class="artista-regiao">📍 Região ID: <%= artista.getIdRegiao() %></p>
-                        <p class="artista-categoria">🎨 Categoria ID: <%= artista.getCategoriaPrincipal() %></p>
-                        
-                        <% if (artista.getTagsPrincipais() != null) { %>
-                            <div class="tags">
-                                <% for (String tag : artista.getTagsPrincipais().split(",")) { %>
-                                    <span class="badge"><%= tag.trim() %></span>
-                                <% } %>
-                            </div>
-                        <% } %>
-                        
-                        <div class="artista-stats">
-                            <span>📊 Obras: 0</span>
-                            <span>👥 Seguidores: 0</span>
-                        </div>
-                        
-                        <div class="artista-actions">
-                            <a href="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>" class="btn-primary">Ver Perfil</a>
-                            <button class="btn-secondary">Seguir</button>
-                        </div>
+                for (UsuarioModel artista : artistas) {
+                    boolean ehOProprio = usuarioLogado != null &&
+                                        usuarioLogado.getIdUsuario().equals(artista.getIdUsuario());
+            %>
+                <div class="card-artista">
+                    <div class="artista-avatar">
+                        <img src="<%= request.getContextPath() %>/images/avatares/<%= artista.getIdIcone() != null ? artista.getIdIcone() : "avatar1.png" %>"
+                             alt="<%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %>">
                     </div>
-            <%  }
-            } else { %>
+                    <h3><%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %></h3>
+                    <% if (nomesRegioes != null && artista.getIdRegiao() != null) { %>
+                        <p class="artista-regiao">📍 <%= nomesRegioes.get(artista.getIdRegiao()) %></p>
+                    <% } %>
+                    <% if (nomesCategorias != null && artista.getCategoriaPrincipal() != null) { %>
+                        <p class="artista-categoria">🎨 <%= nomesCategorias.get(artista.getCategoriaPrincipal()) %></p>
+                    <% } %>
+
+                    <% if (artista.getTagsPrincipais() != null && !artista.getTagsPrincipais().isEmpty()) { %>
+                        <div class="tags">
+                            <% for (String idTagStr : artista.getTagsPrincipais().split(",")) {
+                                idTagStr = idTagStr.trim();
+                                if (!idTagStr.isEmpty()) {
+                                    String nomeTag = null;
+                                    if (nomesTags != null) {
+                                        try { nomeTag = nomesTags.get(Integer.parseInt(idTagStr)); } catch (NumberFormatException e) { nomeTag = idTagStr; }
+                                    }
+                            %>
+                                <span class="badge"><%= nomeTag != null ? nomeTag : idTagStr %></span>
+                            <% } } %>
+                        </div>
+                    <% } %>
+
+                    <div class="artista-actions">
+                        <a href="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>" class="btn-ver">Ver Perfil</a>
+                        <% if (!ehOProprio) { %>
+                            <form action="<%= request.getContextPath() %>/seguir" method="post" style="margin:0;">
+                                <input type="hidden" name="idArtistaAlvo" value="<%= artista.getIdUsuario() %>">
+                                <button type="submit" class="btn-secondary">Seguir</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% } } else { %>
                 <p class="no-results">Nenhum artista encontrado.</p>
             <% } %>
         </div>
