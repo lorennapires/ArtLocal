@@ -53,6 +53,26 @@ public class ObraDAO {
         return null;
     }
 
+    public ObraModel buscarUltimaPorUsuario(int idUsuario) {
+        String sql = "SELECT * FROM obra WHERE id_usuario = ? ORDER BY id_obra DESC LIMIT 1";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idUsuario);
+            rs = stmt.executeQuery();
+            if (rs.next()) return extrairObra(rs);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar última obra: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try { if (rs != null) rs.close(); if (stmt != null) stmt.close(); if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return null;
+    }
+
     public List<ObraModel> listarTodas() {
         String sql = "SELECT * FROM obra ORDER BY data_criacao DESC";
         List<ObraModel> obras = new ArrayList<>();
@@ -203,21 +223,6 @@ public class ObraDAO {
         }
     }
 
-    private ObraModel extrairObra(ResultSet rs) throws SQLException {
-        ObraModel obra = new ObraModel();
-        obra.setIdObra(rs.getInt("id_obra"));
-        obra.setIdUsuario(rs.getInt("id_usuario"));
-        obra.setIdCategoria(rs.getInt("id_categoria"));
-        obra.setNomeObra(rs.getString("nome_obra"));
-        obra.setDescricao(rs.getString("descricao"));
-        obra.setLinkExterno(rs.getString("link_externo"));
-        obra.setPreco(rs.getBigDecimal("preco"));
-        obra.setImagemObra(rs.getString("imagem_obra"));
-        Timestamp timestamp = rs.getTimestamp("data_criacao");
-        if (timestamp != null) obra.setDataCriacao(timestamp.toLocalDateTime());
-        return obra;
-    }
-
     public int contarObrasPorUsuario(int idUsuario) {
         String sql = "SELECT COUNT(*) as total FROM obra WHERE id_usuario = ?";
         Connection conn = null;
@@ -236,5 +241,20 @@ public class ObraDAO {
             try { if (rs != null) rs.close(); if (stmt != null) stmt.close(); if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return 0;
+    }
+
+    private ObraModel extrairObra(ResultSet rs) throws SQLException {
+        ObraModel obra = new ObraModel();
+        obra.setIdObra(rs.getInt("id_obra"));
+        obra.setIdUsuario(rs.getInt("id_usuario"));
+        obra.setIdCategoria(rs.getInt("id_categoria"));
+        obra.setNomeObra(rs.getString("nome_obra"));
+        obra.setDescricao(rs.getString("descricao"));
+        obra.setLinkExterno(rs.getString("link_externo"));
+        obra.setPreco(rs.getBigDecimal("preco"));
+        obra.setImagemObra(rs.getString("imagem_obra"));
+        Timestamp timestamp = rs.getTimestamp("data_criacao");
+        if (timestamp != null) obra.setDataCriacao(timestamp.toLocalDateTime());
+        return obra;
     }
 }

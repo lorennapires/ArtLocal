@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import model.UsuarioModel;
 import model.ObraModel;
 import model.RegiaoModel;
 import model.CategoriaModel;
+import model.InteracaoModel;
 
 @WebServlet("/perfil")
 public class PerfilServlet extends HttpServlet {
@@ -48,6 +50,23 @@ public class PerfilServlet extends HttpServlet {
             totalSeguidores = interacaoDAO.contarSeguidores(usuario.getIdUsuario());
         }
 
+        // Buscar obras favoritadas
+        List<InteracaoModel> favoritos = interacaoDAO.listarFavoritos(usuario.getIdUsuario());
+        List<ObraModel> obrasFavoritadas = new ArrayList<>();
+        for (InteracaoModel fav : favoritos) {
+            if (fav.getIdObra() != null) {
+                ObraModel obraFav = obraDAO.buscarPorId(fav.getIdObra());
+                if (obraFav != null) obrasFavoritadas.add(obraFav);
+            }
+        }
+
+        // Nomes de categorias para obras favoritadas
+        Map<Integer,String> nomesCategorias = new HashMap<>();
+        List<CategoriaModel> todasCats = categoriaDAO.listarTodas();
+        for (CategoriaModel cat : todasCats) {
+            nomesCategorias.put(cat.getIdCategoria(), cat.getNomeCategoria());
+        }
+
         String nomeRegiao = null;
         if (usuario.getIdRegiao() != null) {
             RegiaoModel regiao = regiaoDAO.buscarPorId(usuario.getIdRegiao());
@@ -61,6 +80,8 @@ public class PerfilServlet extends HttpServlet {
         }
 
         request.setAttribute("obras", obras);
+        request.setAttribute("obrasFavoritadas", obrasFavoritadas);
+        request.setAttribute("nomesCategorias", nomesCategorias);
         request.setAttribute("totalObras", totalObras);
         request.setAttribute("totalSeguidores", totalSeguidores);
         request.setAttribute("nomeRegiao", nomeRegiao);

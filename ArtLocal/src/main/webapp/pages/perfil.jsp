@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="model.UsuarioModel" %>
-<%@ page import="model.ObraModel" %>
+<%@ page import="java.util.List, java.util.Map" %>
+<%@ page import="model.UsuarioModel, model.ObraModel" %>
 
 <jsp:include page="/includes/header.jsp" />
 
@@ -13,6 +12,8 @@
     }
 
     List<ObraModel> obras = (List<ObraModel>) request.getAttribute("obras");
+    List<ObraModel> obrasFavoritadas = (List<ObraModel>) request.getAttribute("obrasFavoritadas");
+    Map<Integer,String> nomesCategorias = (Map<Integer,String>) request.getAttribute("nomesCategorias");
     Integer totalSeguidores = (Integer) request.getAttribute("totalSeguidores");
     Integer totalObras = (Integer) request.getAttribute("totalObras");
     String nomeRegiao = (String) request.getAttribute("nomeRegiao");
@@ -57,13 +58,13 @@
             <button class="tab" data-tab="configuracoes">Configurações</button>
         </div>
 
+        <%-- Aba Minhas Obras --%>
         <% if (ehArtista) { %>
         <div class="tab-content active" id="obras">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-md);">
                 <h2>Minhas Obras</h2>
                 <a href="<%= request.getContextPath() %>/nova-obra" class="btn-primary">+ Publicar Nova Obra</a>
             </div>
-
             <% if (obras != null && !obras.isEmpty()) { %>
                 <div class="grid">
                     <% for (ObraModel obra : obras) {
@@ -83,11 +84,9 @@
                                 <% } %>
                                 <div style="display:flex; gap:0.5rem; margin-top:auto;">
                                     <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>"
-                                       class="btn-ver"
-                                       style="flex:1; text-align:center; display:flex; align-items:center; justify-content:center;">Ver</a>
+                                       class="btn-ver" style="flex:1; text-align:center; display:flex; align-items:center; justify-content:center;">Ver</a>
                                     <a href="<%= request.getContextPath() %>/editar-obra?id=<%= obra.getIdObra() %>"
-                                       class="btn-secondary btn-small"
-                                       style="flex:1; text-align:center; display:flex; align-items:center; justify-content:center;">Editar</a>
+                                       class="btn-secondary btn-small" style="flex:1; text-align:center; display:flex; align-items:center; justify-content:center;">Editar</a>
                                 </div>
                             </div>
                         </div>
@@ -102,13 +101,45 @@
         </div>
         <% } %>
 
+        <%-- Aba Favoritos --%>
         <div class="tab-content <%= !ehArtista ? "active" : "" %>" id="favoritos">
-            <div class="empty-state">
-                <p>Você ainda não favoritou nenhuma obra.</p>
-                <a href="<%= request.getContextPath() %>/explorar" class="btn-primary">Explorar obras</a>
-            </div>
+            <h2 style="margin-bottom:var(--spacing-md);">Obras Favoritas</h2>
+            <% if (obrasFavoritadas != null && !obrasFavoritadas.isEmpty()) { %>
+                <div class="grid">
+                    <% for (ObraModel obra : obrasFavoritadas) {
+                        String imgObra = (obra.getImagemObra() != null && !obra.getImagemObra().isEmpty())
+                                         ? obra.getImagemObra() : "placeholder.jpg";
+                        String nomeCat = nomesCategorias != null ? nomesCategorias.get(obra.getIdCategoria()) : null;
+                    %>
+                        <div class="card-obra">
+                            <div class="obra-image">
+                                <img src="<%= request.getContextPath() %>/images/obras/<%= imgObra %>"
+                                     alt="<%= obra.getNomeObra() %>"
+                                     onerror="this.src='<%= request.getContextPath() %>/images/obras/placeholder.jpg'">
+                            </div>
+                            <div class="obra-info" style="display:flex; flex-direction:column; flex:1;">
+                                <h3><%= obra.getNomeObra() %></h3>
+                                <% if (nomeCat != null) { %>
+                                    <p style="color:var(--gray); font-size:0.85rem;">🎨 <%= nomeCat %></p>
+                                <% } %>
+                                <% if (obra.getPreco() != null) { %>
+                                    <p class="preco">R$ <%= obra.getPreco() %></p>
+                                <% } %>
+                                <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>"
+                                   class="btn-ver" style="margin-top:auto;">Ver</a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <p>Você ainda não favoritou nenhuma obra.</p>
+                    <a href="<%= request.getContextPath() %>/explorar" class="btn-primary">Explorar obras</a>
+                </div>
+            <% } %>
         </div>
 
+        <%-- Aba Seguindo --%>
         <div class="tab-content" id="seguindo">
             <div class="empty-state">
                 <p>Você ainda não segue nenhum artista.</p>
@@ -116,10 +147,10 @@
             </div>
         </div>
 
+        <%-- Aba Configurações --%>
         <div class="tab-content" id="configuracoes">
             <div class="config-section">
                 <h2>Configurações da Conta</h2>
-
                 <div class="config-card">
                     <h3>Alterar Senha</h3>
                     <form action="<%= request.getContextPath() %>/alterar-senha" method="post">
@@ -138,11 +169,10 @@
                         <button type="submit" class="btn-primary">Salvar Nova Senha</button>
                     </form>
                 </div>
-
                 <div class="config-card" style="margin-top:var(--spacing-lg); border:1px solid #e53e3e; border-radius:var(--radius-md); padding:var(--spacing-md);">
                     <h3 style="color:#e53e3e;">Excluir Conta</h3>
                     <p style="color:var(--gray); margin-bottom:var(--spacing-md);">
-                        Esta ação é permanente e não pode ser desfeita. Todos os seus dados e obras serão removidos.
+                        Esta ação é permanente e não pode ser desfeita.
                     </p>
                     <button class="btn-danger" onclick="document.getElementById('modalExcluir').style.display='flex'">
                         Excluir Conta
@@ -160,7 +190,7 @@
                 max-width:400px; width:90%; text-align:center;">
         <h3 style="margin-bottom:var(--spacing-md);">Tem certeza?</h3>
         <p style="color:var(--gray); margin-bottom:var(--spacing-lg);">
-            Essa ação não pode ser desfeita. Sua conta e todas as obras serão excluídas permanentemente.
+            Sua conta e todas as obras serão excluídas permanentemente.
         </p>
         <div style="display:flex; gap:var(--spacing-sm); justify-content:center;">
             <button class="btn-secondary"

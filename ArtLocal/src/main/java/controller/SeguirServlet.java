@@ -45,11 +45,7 @@ public class SeguirServlet extends HttpServlet {
             response.sendRedirect(redirect);
         } else {
             String referer = request.getHeader("Referer");
-            if (referer != null) {
-                response.sendRedirect(referer);
-            } else {
-                response.sendRedirect("artistas");
-            }
+            response.sendRedirect(referer != null ? referer : "artistas");
         }
     }
 }

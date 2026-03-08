@@ -35,6 +35,7 @@ public class ObraDetalhesServlet extends HttpServlet {
         }
 
         int idObra = Integer.parseInt(idParam);
+
         ObraDAO obraDAO = new ObraDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         TagDAO tagDAO = new TagDAO();
@@ -68,7 +69,6 @@ public class ObraDetalhesServlet extends HttpServlet {
             if (regiao != null) nomeRegiao = regiao.getNomeRegiao();
         }
 
-        // mapa de nomes de tags para exibir as tags do artista
         Map<Integer,String> nomesTags = new HashMap<>();
         for (TagModel tag : tagDAO.listarTodas()) {
             nomesTags.put(tag.getIdTag(), tag.getNomeTag());

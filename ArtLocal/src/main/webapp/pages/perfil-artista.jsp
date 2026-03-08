@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="model.UsuarioModel" %>
-<%@ page import="model.ObraModel" %>
-<%@ page import="model.RegiaoModel" %>
+<%@ page import="java.util.List, java.util.Map" %>
+<%@ page import="model.UsuarioModel, model.ObraModel, model.RegiaoModel" %>
 
 <jsp:include page="/includes/header.jsp" />
 
@@ -14,17 +11,23 @@
     Integer totalSeguidores = (Integer) request.getAttribute("totalSeguidores");
     RegiaoModel regiao = (RegiaoModel) request.getAttribute("regiao");
     String nomeCategoria = (String) request.getAttribute("nomeCategoria");
-    Map<Integer, String> nomesTags = (Map<Integer, String>) request.getAttribute("nomesTags");
+    Map<Integer,String> nomesTags = (Map<Integer,String>) request.getAttribute("nomesTags");
 
     UsuarioModel usuarioLogado = null;
     javax.servlet.http.HttpSession sessao = request.getSession(false);
-    if (sessao != null) {
-        usuarioLogado = (UsuarioModel) sessao.getAttribute("usuarioLogado");
-    }
+    if (sessao != null) usuarioLogado = (UsuarioModel) sessao.getAttribute("usuarioLogado");
 
     boolean ehOProprioPerfil = usuarioLogado != null &&
                                 usuarioLogado.getIdUsuario().equals(artista.getIdUsuario());
+
+    String msgParam = request.getParameter("msg");
 %>
+
+<% if ("seguindo".equals(msgParam)) { %>
+    <div style="background:#d4edda; color:#155724; padding:0.75rem 1rem; text-align:center; border-bottom:1px solid #c3e6cb;">
+        ✅ Você agora está seguindo <%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %>!
+    </div>
+<% } %>
 
 <section class="perfil-artista">
     <div class="container">
@@ -34,27 +37,21 @@
             <div class="perfil-info">
                 <div class="perfil-avatar">
                     <img src="<%= request.getContextPath() %>/images/avatares/<%= artista.getIdIcone() != null ? artista.getIdIcone() : "avatar1.png" %>"
-                         alt="<%= artista.getNomeArtistico() %>">
+                         alt="<%= artista.getNomeArtistico() %>"
+                         onerror="this.src='<%= request.getContextPath() %>/images/avatares/avatar1.png'">
                 </div>
                 <div class="perfil-dados">
                     <h1><%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %></h1>
                     <p class="perfil-regiao">📍 <%= regiao != null ? regiao.getNomeRegiao() : "Região não informada" %></p>
-
                     <div class="perfil-stats">
-                        <div class="stat">
-                            <strong><%= totalObras %></strong>
-                            <span>Obras</span>
-                        </div>
-                        <div class="stat">
-                            <strong><%= totalSeguidores %></strong>
-                            <span>Seguidores</span>
-                        </div>
+                        <div class="stat"><strong><%= totalObras %></strong><span>Obras</span></div>
+                        <div class="stat"><strong><%= totalSeguidores %></strong><span>Seguidores</span></div>
                     </div>
-
                     <div class="perfil-actions">
                         <% if (!ehOProprioPerfil) { %>
                             <form action="<%= request.getContextPath() %>/seguir" method="post" style="margin:0;">
                                 <input type="hidden" name="idArtistaAlvo" value="<%= artista.getIdUsuario() %>">
+                                <input type="hidden" name="redirect" value="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>&msg=seguindo">
                                 <button type="submit" class="btn-primary">Seguir</button>
                             </form>
                         <% } else { %>
@@ -71,6 +68,7 @@
             <button class="tab" data-tab="obras">Obras</button>
         </div>
 
+        <%-- Aba Sobre --%>
         <div class="tab-content active" id="sobre">
             <div class="sobre-content">
                 <h2>Biografia</h2>
@@ -78,12 +76,14 @@
 
                 <% if (nomeCategoria != null) { %>
                     <h3>Categoria Principal</h3>
-                    <p><%= nomeCategoria %></p>
+                    <span style="background:var(--gold); color:#fff; padding:3px 12px; border-radius:20px; font-size:0.9rem;">
+                        🎨 <%= nomeCategoria %>
+                    </span>
                 <% } %>
 
                 <% if (artista.getTagsPrincipais() != null && !artista.getTagsPrincipais().isEmpty()) { %>
-                    <h3>Tags</h3>
-                    <div class="tags">
+                    <h3 style="margin-top:var(--spacing-md);">Tags</h3>
+                    <div class="tags" style="display:flex; flex-wrap:wrap; gap:6px;">
                         <% for (String idTag : artista.getTagsPrincipais().split(",")) {
                             idTag = idTag.trim();
                             if (!idTag.isEmpty()) {
@@ -92,37 +92,44 @@
                                     try { nomeTag = nomesTags.get(Integer.parseInt(idTag)); } catch (NumberFormatException e) { nomeTag = idTag; }
                                 }
                         %>
-                            <span class="badge"><%= nomeTag != null ? nomeTag : idTag %></span>
+                            <span style="background:#f06292; color:#fff; padding:3px 10px; border-radius:20px; font-size:0.85rem;">
+                                <%= nomeTag != null ? nomeTag : idTag %>
+                            </span>
                         <% } } %>
                     </div>
                 <% } %>
 
                 <% if (artista.getPortfolio() != null && !artista.getPortfolio().isEmpty()) { %>
-                    <h3>Portfólio</h3>
+                    <h3 style="margin-top:var(--spacing-md);">Portfólio</h3>
                     <a href="<%= artista.getPortfolio() %>" target="_blank" class="btn-primary">Visitar Portfólio</a>
                 <% } %>
             </div>
         </div>
 
+        <%-- Aba Obras --%>
         <div class="tab-content" id="obras">
-            <div class="obras-header">
-                <h2>Obras de <%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %></h2>
-            </div>
+            <h2 style="margin-bottom:var(--spacing-md);">Obras de <%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %></h2>
             <div class="grid">
                 <% if (obras != null && !obras.isEmpty()) {
-                    for (ObraModel obra : obras) { %>
-                        <div class="card-obra">
-                            <div class="obra-image">
-                                <img src="<%= request.getContextPath() %>/images/obras/placeholder.jpg" alt="<%= obra.getNomeObra() %>">
-                            </div>
-                            <div class="obra-info">
-                                <h3><%= obra.getNomeObra() %></h3>
-                                <% if (obra.getPreco() != null) { %>
-                                    <p class="preco">R$ <%= obra.getPreco() %></p>
-                                <% } %>
-                                <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>" class="btn-ver">Ver Detalhes</a>
-                            </div>
+                    for (ObraModel obra : obras) {
+                        String imgObra = (obra.getImagemObra() != null && !obra.getImagemObra().isEmpty())
+                                         ? obra.getImagemObra() : "placeholder.jpg";
+                %>
+                    <div class="card-obra">
+                        <div class="obra-image">
+                            <img src="<%= request.getContextPath() %>/images/obras/<%= imgObra %>"
+                                 alt="<%= obra.getNomeObra() %>"
+                                 onerror="this.src='<%= request.getContextPath() %>/images/obras/placeholder.jpg'">
                         </div>
+                        <div class="obra-info" style="display:flex; flex-direction:column; flex:1;">
+                            <h3><%= obra.getNomeObra() %></h3>
+                            <% if (obra.getPreco() != null) { %>
+                                <p class="preco">R$ <%= obra.getPreco() %></p>
+                            <% } %>
+                            <a href="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>"
+                               class="btn-ver" style="margin-top:auto;">Ver Detalhes</a>
+                        </div>
+                    </div>
                 <% } } else { %>
                     <p style="color:var(--gray);">Nenhuma obra publicada ainda.</p>
                 <% } %>
@@ -150,7 +157,7 @@
             });
         } else {
             navigator.clipboard.writeText(window.location.href).then(function() {
-                alert('Link copiado para a área de transferência!');
+                alert('Link copiado!');
             });
         }
     }

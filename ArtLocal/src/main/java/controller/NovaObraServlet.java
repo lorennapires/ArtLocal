@@ -19,6 +19,9 @@ import model.ObraModel;
 import model.CategoriaModel;
 import model.TagModel;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import util.Conexao;
 
 @WebServlet("/nova-obra")
 @MultipartConfig(
@@ -95,6 +98,7 @@ public class NovaObraServlet extends HttpServlet {
         String idCategoriaStr = request.getParameter("idCategoria");
         String linkExterno    = request.getParameter("linkExterno");
         String precoStr       = request.getParameter("preco");
+        String tagsStr        = request.getParameter("tags"); // "1,3,7"
 
         if (nomeObra == null || nomeObra.trim().isEmpty() ||
             descricao == null || descricao.trim().isEmpty() ||
@@ -124,21 +128,58 @@ public class NovaObraServlet extends HttpServlet {
         obra.setNomeObra(nomeObra.trim());
         obra.setDescricao(descricao.trim());
         obra.setIdCategoria(Integer.parseInt(idCategoriaStr));
-        obra.setLinkExterno(linkExterno);
+        obra.setLinkExterno((linkExterno != null && !linkExterno.trim().isEmpty()) ? linkExterno.trim() : null);
         obra.setImagemObra(nomeArquivo);
 
         if (precoStr != null && !precoStr.trim().isEmpty()) {
-            obra.setPreco(new BigDecimal(precoStr));
+            try { obra.setPreco(new BigDecimal(precoStr)); } catch (Exception e) {}
         }
 
         ObraDAO obraDAO = new ObraDAO();
         boolean sucesso = obraDAO.inserir(obra);
 
         if (sucesso) {
+            // Busca a obra recém-inserida para pegar o ID
+            ObraModel obraInserida = obraDAO.buscarUltimaPorUsuario(usuario.getIdUsuario());
+
+            // Salva tags na obra_tag
+            if (obraInserida != null && tagsStr != null && !tagsStr.trim().isEmpty()) {
+                salvarTagsObra(obraInserida.getIdObra(), tagsStr);
+            }
+
             response.sendRedirect("perfil");
         } else {
             request.setAttribute("erro", "Erro ao publicar obra. Tente novamente.");
             doGet(request, response);
+        }
+    }
+
+    private void salvarTagsObra(int idObra, String tagsStr) {
+        String sql = "INSERT INTO obra_tag (id_obra, id_tag) VALUES (?, ?)";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.prepareStatement(sql);
+            for (String idTagStr : tagsStr.split(",")) {
+                idTagStr = idTagStr.trim();
+                if (!idTagStr.isEmpty()) {
+                    try {
+                        stmt.setInt(1, idObra);
+                        stmt.setInt(2, Integer.parseInt(idTagStr));
+                        stmt.executeUpdate();
+                    } catch (Exception e) {
+                        System.err.println("Erro ao salvar tag " + idTagStr + ": " + e.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar tags da obra: " + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) { e.printStackTrace(); }
         }
     }
 

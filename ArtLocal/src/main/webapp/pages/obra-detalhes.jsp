@@ -23,130 +23,157 @@
     String imgArtista = (artista != null && artista.getIdIcone() != null)
                         ? artista.getIdIcone() : "avatar1.png";
 
-    String msgSucesso = request.getParameter("msg");
+    String msgParam = request.getParameter("msg");
 %>
 
-<section class="obra-detalhes">
-    <div class="container" style="max-width:800px;">
+<section style="background:var(--light); min-height:100vh; padding:var(--spacing-lg) 0;">
+    <div class="container" style="max-width:860px;">
 
-        <% if ("curtiu".equals(msgSucesso)) { %>
+        <% if ("curtiu".equals(msgParam)) { %>
             <div style="background:#d4edda; color:#155724; padding:0.75rem 1rem;
-                        border-radius:var(--radius-md); margin-bottom:var(--spacing-md);">
-                ✅ Obra curtida com sucesso!
-            </div>
-        <% } else if ("favoritou".equals(msgSucesso)) { %>
+                        border-radius:var(--radius-md); margin-bottom:var(--spacing-md);">✅ Obra curtida!</div>
+        <% } else if ("favoritou".equals(msgParam)) { %>
             <div style="background:#d4edda; color:#155724; padding:0.75rem 1rem;
-                        border-radius:var(--radius-md); margin-bottom:var(--spacing-md);">
-                ✅ Obra adicionada aos favoritos!
-            </div>
+                        border-radius:var(--radius-md); margin-bottom:var(--spacing-md);">✅ Adicionada aos favoritos!</div>
         <% } %>
 
-        <h1 style="margin-bottom:var(--spacing-md);"><%= obra.getNomeObra() %></h1>
+        <div style="background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;">
 
-        <%-- Artista — só aqui, não aparece mais abaixo --%>
-        <% if (artista != null) { %>
-        <div style="display:flex; align-items:flex-start; gap:var(--spacing-md); margin-bottom:var(--spacing-lg);
-                    background:var(--light); border-radius:var(--radius-md); padding:var(--spacing-md);">
-            <img src="<%= request.getContextPath() %>/images/avatares/<%= imgArtista %>"
-                 alt="<%= artista.getNomeCompleto() %>"
-                 style="width:75px; height:75px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); flex-shrink:0;"
-                 onerror="this.src='<%= request.getContextPath() %>/images/avatares/avatar1.png'">
-            <div style="flex:1;">
-                <a href="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>"
-                   style="font-weight:700; color:var(--dark); text-decoration:none; font-size:1.1rem;">
-                    <%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %>
-                </a>
-                <% if (nomeRegiao != null) { %>
-                    <p style="color:var(--gray); font-size:0.85rem; margin:3px 0;">📍 <%= nomeRegiao %></p>
-                <% } %>
-                <% if (artista.getBiografia() != null && !artista.getBiografia().isEmpty()) { %>
-                    <p style="color:var(--gray); font-size:0.88rem; margin:6px 0;"><%= artista.getBiografia() %></p>
-                <% } %>
-                <div style="margin-top:8px;">
+            <%-- 1. FOTO NO TOPO, SEM CORTE --%>
+            <div style="background:#1a1a1a; display:flex; align-items:center;
+                        justify-content:center; width:100%;">
+                <img src="<%= request.getContextPath() %>/images/obras/<%= imgObra %>"
+                     alt="<%= obra.getNomeObra() %>"
+                     style="max-width:100%; max-height:480px; object-fit:contain; display:block;"
+                     onerror="this.src='<%= request.getContextPath() %>/images/obras/placeholder.jpg'">
+            </div>
+
+            <div style="padding:var(--spacing-lg);">
+
+                <%-- 2. TÍTULO --%>
+                <h1 style="font-size:1.6rem; margin-bottom:0.5rem;"><%= obra.getNomeObra() %></h1>
+
+                <%-- 3. CATEGORIA + TAGS DA OBRA --%>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:var(--spacing-md); align-items:center;">
+                    <% if (nomeCategoria != null) { %>
+                        <span style="background:var(--gold); color:#fff; font-size:0.78rem;
+                                     padding:3px 10px; border-radius:20px; font-weight:600;">
+                            🎨 <%= nomeCategoria %>
+                        </span>
+                    <% } %>
+                    <% if (tags != null && !tags.isEmpty()) {
+                        for (TagModel tag : tags) { %>
+                            <span style="background:#f06292; color:#fff; font-size:0.78rem;
+                                         padding:3px 10px; border-radius:20px;">
+                                <%= tag.getNomeTag() %>
+                            </span>
+                    <% } } %>
+                </div>
+
+                <%-- 4. ARTISTA --%>
+                <% if (artista != null) { %>
+                <div style="display:flex; align-items:center; gap:var(--spacing-sm);
+                            padding:var(--spacing-sm) var(--spacing-md);
+                            background:var(--light); border-radius:var(--radius-md);
+                            margin-bottom:var(--spacing-lg);">
+                    <img src="<%= request.getContextPath() %>/images/avatares/<%= imgArtista %>"
+                         style="width:48px; height:48px; border-radius:50%; object-fit:cover;
+                                border:2px solid var(--gold); flex-shrink:0;"
+                         onerror="this.src='<%= request.getContextPath() %>/images/avatares/avatar1.png'">
+                    <div style="flex:1; min-width:0;">
+                        <a href="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>"
+                           style="font-weight:700; color:var(--dark); text-decoration:none; font-size:0.95rem;">
+                            <%= artista.getNomeArtistico() != null ? artista.getNomeArtistico() : artista.getNomeCompleto() %>
+                        </a>
+                        <% if (nomeRegiao != null) { %>
+                            <p style="color:var(--gray); font-size:0.8rem; margin:2px 0 0;">📍 <%= nomeRegiao %></p>
+                        <% } %>
+                        <% if (artista.getBiografia() != null && !artista.getBiografia().isEmpty()) { %>
+                            <p style="color:var(--gray); font-size:0.8rem; margin:4px 0 0;
+                                      display:-webkit-box; -webkit-line-clamp:2;
+                                      -webkit-box-orient:vertical; overflow:hidden;">
+                                <%= artista.getBiografia() %>
+                            </p>
+                        <% } %>
+                        <%-- Tags do artista --%>
+                        <% if (artista.getTagsPrincipais() != null && !artista.getTagsPrincipais().isEmpty() && nomesTags != null) { %>
+                            <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:5px;">
+                            <% for (String tid : artista.getTagsPrincipais().split(",")) {
+                                try {
+                                    String nt = nomesTags.get(Integer.parseInt(tid.trim()));
+                                    if (nt != null) { %>
+                                        <span style="background:#f06292; color:#fff; font-size:0.7rem;
+                                                     padding:2px 7px; border-radius:20px;"><%= nt %></span>
+                            <%      }
+                                } catch(Exception e2) {} } %>
+                            </div>
+                        <% } %>
+                    </div>
                     <a href="<%= request.getContextPath() %>/artista?id=<%= artista.getIdUsuario() %>"
-                       class="btn-secondary" style="font-size:0.85rem; padding:4px 12px;">Ver Perfil Completo</a>
+                       class="btn-secondary"
+                       style="font-size:0.8rem; padding:4px 10px; white-space:nowrap; flex-shrink:0;">Ver Perfil</a>
+                </div>
+                <% } %>
+
+                <%-- 5. DESCRIÇÃO --%>
+                <h3 style="margin-bottom:0.4rem;">Descrição</h3>
+                <p style="color:var(--gray); line-height:1.7; margin-bottom:var(--spacing-md);"><%= obra.getDescricao() %></p>
+
+                <%-- 6. PREÇO --%>
+                <% if (obra.getPreco() != null) { %>
+                    <p style="font-size:1.4rem; font-weight:700; color:var(--primary);
+                               margin-bottom:var(--spacing-md);">R$ <%= obra.getPreco() %></p>
+                <% } %>
+
+                <%-- 7. LINK EXTERNO --%>
+                <% if (obra.getLinkExterno() != null && !obra.getLinkExterno().isEmpty()) { %>
+                    <a href="<%= obra.getLinkExterno() %>" target="_blank" class="btn-primary"
+                       style="display:inline-block; margin-bottom:var(--spacing-md);">Visitar Link Externo</a>
+                <% } %>
+
+                <%-- 8. AÇÕES --%>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;
+                            padding-top:var(--spacing-md); border-top:1px solid var(--gray-light);">
+                    <% if (usuarioLogado != null) { %>
+                        <form action="<%= request.getContextPath() %>/interacao" method="post" style="margin:0;">
+                            <input type="hidden" name="acao" value="adicionar">
+                            <input type="hidden" name="tipo" value="curtir">
+                            <input type="hidden" name="idObra" value="<%= obra.getIdObra() %>">
+                            <input type="hidden" name="redirect"
+                                   value="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>&msg=curtiu">
+                            <button type="submit" class="btn-action">
+                                ❤️ Curtir (<%= totalCurtidas != null ? totalCurtidas : 0 %>)
+                            </button>
+                        </form>
+                        <form action="<%= request.getContextPath() %>/interacao" method="post" style="margin:0;">
+                            <input type="hidden" name="acao" value="adicionar">
+                            <input type="hidden" name="tipo" value="favorito">
+                            <input type="hidden" name="idObra" value="<%= obra.getIdObra() %>">
+                            <input type="hidden" name="redirect"
+                                   value="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>&msg=favoritou">
+                            <button type="submit" class="btn-action">⭐ Favoritar</button>
+                        </form>
+                    <% } else { %>
+                        <a href="<%= request.getContextPath() %>/login" class="btn-action">
+                            ❤️ Curtir (<%= totalCurtidas != null ? totalCurtidas : 0 %>)
+                        </a>
+                        <a href="<%= request.getContextPath() %>/login" class="btn-action">⭐ Favoritar</a>
+                    <% } %>
+                    <button class="btn-action"
+                        onclick="if(navigator.share){navigator.share({title:'<%= obra.getNomeObra() %>',url:window.location.href})}else{navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado!'))}">
+                        🔗 Compartilhar
+                    </button>
+                    <% if (usuarioLogado != null && ehOProprio) { %>
+                        <a href="<%= request.getContextPath() %>/editar-obra?id=<%= obra.getIdObra() %>"
+                           class="btn-secondary">✏️ Editar Obra</a>
+                    <% } %>
                 </div>
             </div>
         </div>
-        <% } %>
 
-        <%-- Imagem da obra --%>
-        <div style="margin-bottom:var(--spacing-lg);">
-            <img src="<%= request.getContextPath() %>/images/obras/<%= imgObra %>"
-                 alt="<%= obra.getNomeObra() %>"
-                 style="width:100%; max-height:500px; object-fit:cover; border-radius:var(--radius-lg);"
-                 onerror="this.src='<%= request.getContextPath() %>/images/obras/placeholder.jpg'">
-        </div>
-
-        <%-- Categoria (dourado) + Tags da OBRA (rosa) --%>
-        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:var(--spacing-md); align-items:center;">
-            <% if (nomeCategoria != null) { %>
-                <span style="background:var(--gold); color:#fff; font-size:0.8rem;
-                             padding:3px 10px; border-radius:20px; font-weight:600;">
-                    🎨 <%= nomeCategoria %>
-                </span>
-            <% } %>
-            <% if (tags != null) { for (TagModel tag : tags) { %>
-                <span style="background:#f06292; color:#fff; font-size:0.8rem;
-                             padding:3px 10px; border-radius:20px;">
-                    <%= tag.getNomeTag() %>
-                </span>
-            <% } } %>
-        </div>
-
-        <%-- Descrição --%>
-        <div style="margin-bottom:var(--spacing-md);">
-            <h3>Descrição</h3>
-            <p style="color:var(--gray); line-height:1.7;"><%= obra.getDescricao() %></p>
-        </div>
-
-        <%-- Preço --%>
-        <% if (obra.getPreco() != null) { %>
-            <p style="font-size:1.5rem; font-weight:700; color:var(--primary); margin-bottom:var(--spacing-md);">
-                R$ <%= obra.getPreco() %>
-            </p>
-        <% } %>
-
-        <%-- Link externo --%>
-        <% if (obra.getLinkExterno() != null && !obra.getLinkExterno().isEmpty()) { %>
-            <a href="<%= obra.getLinkExterno() %>" target="_blank" class="btn-primary"
-               style="display:inline-block; margin-bottom:var(--spacing-md);">Visitar Link Externo</a>
-        <% } %>
-
-        <%-- Ações curtir/favoritar/compartilhar/editar --%>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:var(--spacing-xl);">
-            <% if (usuarioLogado != null) { %>
-                <form action="<%= request.getContextPath() %>/interacao" method="post" style="margin:0;">
-                    <input type="hidden" name="acao" value="adicionar">
-                    <input type="hidden" name="tipo" value="curtir">
-                    <input type="hidden" name="idObra" value="<%= obra.getIdObra() %>">
-                    <input type="hidden" name="redirect" value="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>&msg=curtiu">
-                    <button type="submit" class="btn-action">❤️ Curtir (<%= totalCurtidas != null ? totalCurtidas : 0 %>)</button>
-                </form>
-                <form action="<%= request.getContextPath() %>/interacao" method="post" style="margin:0;">
-                    <input type="hidden" name="acao" value="adicionar">
-                    <input type="hidden" name="tipo" value="favorito">
-                    <input type="hidden" name="idObra" value="<%= obra.getIdObra() %>">
-                    <input type="hidden" name="redirect" value="<%= request.getContextPath() %>/obra?id=<%= obra.getIdObra() %>&msg=favoritou">
-                    <button type="submit" class="btn-action">⭐ Favoritar</button>
-                </form>
-            <% } else { %>
-                <a href="<%= request.getContextPath() %>/login" class="btn-action">❤️ Curtir (<%= totalCurtidas != null ? totalCurtidas : 0 %>)</a>
-                <a href="<%= request.getContextPath() %>/login" class="btn-action">⭐ Favoritar</a>
-            <% } %>
-            <button class="btn-action"
-                onclick="if(navigator.share){navigator.share({title:'<%= obra.getNomeObra() %>',url:window.location.href})}else{navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado!'))}">
-                🔗 Compartilhar
-            </button>
-            <% if (usuarioLogado != null && ehOProprio) { %>
-                <a href="<%= request.getContextPath() %>/editar-obra?id=<%= obra.getIdObra() %>"
-                   class="btn-secondary">✏️ Editar Obra</a>
-            <% } %>
-        </div>
-
-        <%-- Obras relacionadas --%>
+        <%-- OBRAS RELACIONADAS --%>
         <% if (obrasRelacionadas != null && !obrasRelacionadas.isEmpty()) { %>
-            <div>
+            <div style="margin-top:var(--spacing-xl);">
                 <h2 style="margin-bottom:var(--spacing-md);">Obras Relacionadas</h2>
                 <div class="grid">
                     <% for (ObraModel obraRel : obrasRelacionadas) {
