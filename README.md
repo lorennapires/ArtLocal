@@ -43,6 +43,3 @@ ArtLocal/
     └── pages/         # Páginas JSP
 ```
 
----
-
-Desenvolvido por **Lorenna Macêdo Ramiro Pires** — IFBA Camaçari, 2025.2
